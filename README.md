@@ -1,0 +1,2 @@
+echo # GetNextLine
+# GetNextLine
