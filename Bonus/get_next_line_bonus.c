@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenlee <jenlee@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 17:55:34 by jenlee            #+#    #+#             */
-/*   Updated: 2025/05/26 18:42:09 by jenlee           ###   ########.fr       */
+/*   Updated: 2025/05/27 13:26:47 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <unistd.h>
 
 char	*read_loop(int fd, char *stash, char *buffer)
@@ -18,21 +18,23 @@ char	*read_loop(int fd, char *stash, char *buffer)
 	char	*tmp;
 
 	read_res = 1;
+	if (!stash)
+	{
+		stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
+	}
 	while ((stash == NULL || !ft_strchr(stash, '\n')) && read_res > 0)
 	{
 		read_res = read(fd, buffer, BUFFER_SIZE);
 		if (read_res == -1)
-			return (free(buffer), free(stash), NULL);
+			return (free(stash), NULL);
 		buffer[read_res] = '\0';
-		if (!stash)
-			stash = ft_strdup("");
-		if (!stash)
-			return (free(buffer), NULL);
 		tmp = stash;
 		stash = ft_strjoin(stash, buffer);
 		free(tmp);
 		if (!stash)
-			return (free(buffer), NULL);
+			return (NULL);
 	}
 	return (stash);
 }
@@ -90,7 +92,7 @@ char	*clean_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = malloc(ft_strlen(stash) - 1 + 1);
+	new_stash = malloc(ft_strlen(stash) - i);
 	if (!new_stash)
 		return (NULL);
 	i++;
@@ -106,7 +108,7 @@ char	*get_next_line(int fd)
 	static char	*stash[FD_MAX];
 	char		*line;
 
-	if (fd < 0 || fd >= FD_MAX || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_MAX)
 		return (NULL);
 	stash[fd] = read_and_stash(fd, stash[fd]);
 	if (!stash[fd])

@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 17:55:34 by jenlee            #+#    #+#             */
-/*   Updated: 2025/05/25 23:50:00 by jenlee           ###   ########.fr       */
+/*   Updated: 2025/05/27 18:30:34 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -18,21 +18,23 @@ char	*read_loop(int fd, char *stash, char *buffer)
 	char	*tmp;
 
 	read_res = 1;
+	if (!stash)
+	{
+		stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
+	}
 	while ((stash == NULL || !ft_strchr(stash, '\n')) && read_res > 0)
 	{
 		read_res = read(fd, buffer, BUFFER_SIZE);
 		if (read_res == -1)
-			return (free(buffer), free(stash), NULL);
+			return (free(stash), NULL);
 		buffer[read_res] = '\0';
-		if (!stash)
-			stash = ft_strdup("");
-		if (!stash)
-			return (free(buffer), NULL);
 		tmp = stash;
 		stash = ft_strjoin(stash, buffer);
 		free(tmp);
 		if (!stash)
-			return (free(buffer), NULL);
+			return (NULL);
 	}
 	return (stash);
 }
@@ -90,7 +92,7 @@ char	*clean_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = malloc(ft_strlen(stash) - 1 + 1);
+	new_stash = malloc(ft_strlen(stash) - i);
 	if (!new_stash)
 		return (NULL);
 	i++;
