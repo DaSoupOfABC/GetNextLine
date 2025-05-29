@@ -19,10 +19,14 @@ char *get_next_line(int fd);
 
 ```
 get_next_line/
-├── get_next_line.c        // Contains the core logic
-├── get_next_line_utils.c  // Utility functions (e.g. custom strlen, strchr, etc.)
-├── get_next_line.h        // Header file with function declarations
-├── main.c                 // Optional file for testing purposes
+├── get_next_line.c            // Contains the core logic
+├── get_next_line_utils.c      // Utility functions (e.g. custom strlen, strchr, etc.)
+├── get_next_line.h            // Header file with function declarations
+├── main.c                     // Optional file for testing purposes
+└── Bonus/
+    ├── get_next_line_bonus.c        // Bonus version with multi-FD support
+    ├── get_next_line_utils_bonus.c  // Bonus utility functions
+    └── get_next_line_bonus.h        // Bonus header file
 ```
 
 ## ✅ Features
